@@ -1,0 +1,6 @@
+interface:
+  display_name: "Meegle Feedback Preview"
+  short_description: "飞书项目反馈预览、审批与正文图片规范"
+  default_prompt: "Use $meegle-feedback-preview to draft and preview a Feishu Project feedback before creating it."
+policy:
+  allow_implicit_invocation: true
