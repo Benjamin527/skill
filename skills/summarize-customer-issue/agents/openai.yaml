@@ -1,0 +1,4 @@
+interface:
+  display_name: "客户问题一句话总结"
+  short_description: "将客户现象、根因和方案压缩为一句可直接用于群聊及工单复盘的话"
+  default_prompt: "使用 $summarize-customer-issue 将这段客户问题、根因和处理方案总结成一句话。"

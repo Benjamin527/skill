@@ -1,12 +1,13 @@
 # skill
 
-个人 Codex skills：观测云最佳实践写作、飞书项目反馈预览与客户服务记录提交。
+个人 Codex skills：观测云最佳实践写作、飞书项目反馈预览、客户服务记录提交与客户问题摘要。
 
 | Skill | 用途 |
 | --- | --- |
 | [guance-best-practice-writing](skills/guance-best-practice-writing/SKILL.md) | 观测云最佳实践写作 |
 | [meegle-feedback-preview](skills/meegle-feedback-preview/SKILL.md) | 飞书项目反馈预览与提交 |
 | [guance-service-record-submit](skills/guance-service-record-submit/SKILL.md) | 从 Codex 对话整理服务记录，读取客户配置并以当前飞书用户提交 |
+| [summarize-customer-issue](skills/summarize-customer-issue/SKILL.md) | 用一句话概括客户问题、排查发现与处理结果；供服务记录技能复用 |
 
 ## 安装服务记录 skill
 
@@ -16,8 +17,10 @@
 git clone https://github.com/Benjamin527/skill.git
 cd skill
 mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R skills/guance-service-record-submit "${CODEX_HOME:-$HOME/.codex}/skills/"
+cp -R skills/guance-service-record-submit skills/summarize-customer-issue "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
+
+服务记录技能默认结合 `summarize-customer-issue` 编写反馈内容和结论，安装和更新时需同时复制这两个技能。
 
 首次安装后，在已安装的 skill 中将 `references/target.example.json` 复制为 `references/target.json`，填入团队提供的 Base、正式表、客户配置表标识和表单分享信息。真实配置不包含在公开仓库中；已有配置时不要用空模板覆盖。
 
@@ -36,7 +39,7 @@ $guance-service-record-submit
 
 ```bash
 git pull --ff-only
-cp -R skills/guance-service-record-submit "${CODEX_HOME:-$HOME/.codex}/skills/"
+cp -R skills/guance-service-record-submit skills/summarize-customer-issue "${CODEX_HOME:-$HOME/.codex}/skills/"
 ```
 
 以上覆盖更新 skill 文件，保留已安装目录中未随仓库分发的 `references/target.json`。无需重新填写客户配置或改变当前飞书登录身份。
