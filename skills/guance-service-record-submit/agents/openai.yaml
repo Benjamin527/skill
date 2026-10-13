@@ -1,0 +1,4 @@
+interface:
+  display_name: "观测云服务记录提交"
+  short_description: "读取客户配置、补齐问题处理信息，以当前飞书身份提交正式服务记录"
+  default_prompt: "使用 $guance-service-record-submit 整理本次客户问题及处理结果，读取客户配置，缺少必填信息时询问我，然后提交正式服务记录。"
