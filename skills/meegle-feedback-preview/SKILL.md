@@ -10,23 +10,24 @@ Use this with the `meegle` skill. It captures the user's preferred workflow for 
 ## Non-Negotiable Flow
 
 1. Gather fields and attachments locally: customer, feedback type/template, title, description, app type, functional module, priority, receiving group (`承接小组`), high-priority reason when applicable, trace/link IDs, screenshots, videos, logs. Mark missing values as pending; do not assign a default priority or receiving group.
-2. Resolve live metadata with `meegle` before drafting: project, work item type, enabled template option, customer work item ID, required roles, and field option IDs. Read the selected template's actual description and form requirements as described below. A template ID alone is not its body.
+2. Resolve live metadata with `meegle` before drafting: project, work item type, enabled template option, customer work item ID, required roles, and field option IDs. Reuse the user-provided or saved local template body as described below; use CLI metadata to validate writable fields and option IDs. A template ID alone is not its body.
 3. Upload screenshots as rich-text images with resource type `16`; use resource type `15` only for normal attachment files such as videos, logs, or archives.
 4. Fill the selected template's sections with the user's evidence and inline rich-text screenshots. Include any separate rich-text fields required by that template; do not collapse them into `description`.
 5. Prepare a complete preview before creating or updating the work item. Explicitly show feedback type, priority, receiving group, their confirmation status, all required fields, full body text, and image placement.
 6. Obtain explicit approval of this concrete preview. Priority and receiving group must both have concrete, user-confirmed values before submission; follow the confirmation rules below. An incomplete preview is a draft, not a submission request.
 7. After approval, create/update only the approved values and verify them by reading the item back, including template, priority, receiving group, roles, and rich-text images. If the template, priority, receiving group, or substantive content changes after approval, refresh the affected metadata/body and obtain approval of the revised preview before submission.
 
-## Resolve the Selected Template
+## Reuse the Selected Template
 
-Use the `meegle` auth guard, then `project search`, `workitem meta-types`, `workitem meta-fields`, `workitem meta-roles`, and `workitem meta-create-fields`. Discover current flags with `meegle inspect` when needed. Read [references/template-discovery.md](references/template-discovery.md) for verified commands and CLI limitations.
+Read [references/template-discovery.md](references/template-discovery.md) for saved template sections and verified CLI commands. Use the `meegle` auth guard and CLI metadata for the project, work item type, enabled template option, customer ID, required roles, writable fields, and option IDs; reuse metadata already verified in this task.
 
-- Distinguish the work item type (`反馈`) from the feedback type (`template`, such as `Studio 需求` or `部署问题`). Resolve the selected enabled option from live metadata; never reuse another type's template or a disabled option.
-- Obtain the current selected template's headings, instructions, required/conditional sections, separate body fields, and defaults before producing the final preview. Prefer a supported template configuration API/CLI command when available. If CLI exposes only option IDs and general fields, inspect the current new-item form in the authenticated browser, selecting that feedback type without submitting it.
-- Generic `meta-create-fields` output is not proof of template-specific requirements. A null description default does not prove the template is empty. Inspect the selected form's visibility and conditional rules, including high-priority reason fields.
-- Existing work items may help locate a template or illustrate its structure, but their edited descriptions are not authoritative template definitions. Never copy another customer's content or treat a recent item's body as the current template.
-- If the current template cannot be read, continue organizing the supplied facts, label the body as an unverified draft, and explain what is missing. Obtain the template from the user or regain access before submission; do not silently fall back to a fixed generic body.
-- If the current form is verified to have no body template, write a case-specific description and identify that fact in the preview. Re-resolve the template and rebuild the draft whenever feedback type changes.
+- Template body precedence: the user's supplied or approved template for this request, then the saved matching local template. Reuse its headings and prompts directly; no browser verification or template rediscovery is needed for routine submission.
+- Distinguish the work item type (`反馈`) from the feedback type (`template`, such as `Studio Bug`). Do not reuse a different feedback type's body or a disabled option.
+- CLI metadata validates fields and options; it need not return the template body. A null description default or missing template-specific metadata does not invalidate a supplied or saved template and is not a reason to open a browser or block an otherwise complete submission.
+- Do not open a browser to inspect templates, verify forms, upload attachments, or submit feedback. Use supported CLI/API commands; browser work requires a separate explicit user request.
+- If no matching body is supplied or saved, use a supported template API/CLI if available, or ask only for the missing template content while preserving the prepared facts. Do not borrow another customer's description or invent a template.
+- If the server explicitly rejects a field or requirement, report the exact missing item and retain the draft. For a timeout or unknown outcome, query for the item before any retry; do not fall back to the browser or create duplicates.
+- When the feedback type changes, use the corresponding supplied/saved template and refresh only the affected field metadata and preview.
 
 ## Priority and Receiving Group Confirmation
 
@@ -84,9 +85,9 @@ If the upload response includes `file_url`, prefer:
 ![](<file_url>)<!-- <file_token> -->
 ```
 
-## Description Follows the Live Template
+## Description Follows the Reused Template
 
-There is no universal description shape. Preserve the selected current template's headings, order, warnings, and required prompts; replace entry placeholders with supported facts. Place each screenshot in the section it supports. Do not force requirements, deployment issues, SDK bugs, and Studio bugs into the same two-section structure.
+There is no universal description shape. Preserve the selected supplied or saved template's headings, order, warnings, and required prompts; replace entry placeholders with supported facts. Place each screenshot in the section it supports. Do not force requirements, deployment issues, SDK bugs, and Studio bugs into the same two-section structure.
 
 Keep observations, expected behavior, and unverified hypotheses distinct. Mark missing required facts as pending rather than inventing them. Include template-specific separate fields (for example, an expectation field) in the draft and preview when applicable.
 
@@ -96,7 +97,7 @@ Do not put initial evidence screenshots in `comment add`. Comments are only for 
 
 Before asking for approval, show:
 
-- Work item type, selected feedback template label and ID, and the source used to verify its current body/form.
+- Work item type, selected feedback template label and ID, and the source of the reused body (user-provided or local reference).
 - Customer name and resolved customer ID.
 - Title.
 - Required role assignments such as `客户支持`.
@@ -105,4 +106,4 @@ Before asking for approval, show:
 - Full description and any separate body fields, preserving the selected template, including image placeholders or embedded Markdown lines.
 - Files that will be uploaded and whether they are rich-text images or normal attachments.
 
-If required information is missing, label the preview incomplete and collect it before submission. The documented customer-support role default is permitted; it does not authorize defaults for priority or receiving group. Never use `--ignore-required` to bypass template discovery, required facts, or confirmation of those two fields.
+If required information is missing, label the preview incomplete and collect it before submission. The documented customer-support role default is permitted; it does not authorize defaults for priority or receiving group. Never use `--ignore-required` to bypass required facts, or confirmation of those two fields.
