@@ -9,7 +9,7 @@ Use this with the `meegle` skill. It captures the user's preferred workflow for 
 
 ## Non-Negotiable Flow
 
-1. Gather fields and attachments locally: customer, feedback type/template, title, description, app type, functional module, priority, receiving group (`承接小组`), high-priority reason when applicable, trace/link IDs, screenshots, videos, logs. Mark missing values as pending; do not assign a default priority or receiving group.
+1. Gather fields and attachments locally: customer, feedback type/template, title, description, app type, functional module, priority, receiving group (`承接小组`), high-priority reason when applicable, trace/link IDs, screenshots, videos, logs. Mark missing facts as pending; do not assign a default priority. For an unspecified receiving group, first judge the appropriate group from current routing guidance and the issue's functional module, then propose it for user confirmation.
 2. Resolve live metadata with `meegle` before drafting: project, work item type, enabled template option, customer work item ID, required roles, and field option IDs. Reuse the user-provided or saved local template body as described below; use CLI metadata to validate writable fields and option IDs. A template ID alone is not its body.
 3. Upload screenshots as rich-text images with resource type `16`; use resource type `15` only for normal attachment files such as videos, logs, or archives.
 4. Fill the selected template's sections with the user's evidence and inline rich-text screenshots. Include any separate rich-text fields required by that template; do not collapse them into `description`.
@@ -33,8 +33,9 @@ Read [references/template-discovery.md](references/template-discovery.md) for sa
 
 `优先级` and `承接小组` require user confirmation even if the UI preselects values, the API does not mark them required, or a similar past feedback used them.
 
-- Fetch their current field keys, enabled options, and help text. `承接小组` is its own routing field, not `功能模块`, `客户支持`, or a role owner. Use current group guidance to recommend a group; a recommendation remains pending until accepted.
-- If either value is missing, show available choices or a clearly labelled recommendation with its reason, and ask the user to choose/confirm. Do not invent P2, select `其他`/a fallback group automatically, or omit the field to rely on a server default.
+- Fetch their current field keys, enabled options, and help text. `承接小组` is its own routing field, not `功能模块`, `客户支持`, or a role owner.
+- For an unspecified receiving group, independently judge the best match using the issue's functional module and current group responsibilities. Put one concrete recommendation and a short reason in the completed preview, then ask the user to confirm it. Do not ask an open-ended “which group?” question when the metadata supports a clear choice. For example, when current guidance assigns 故障中心 to 平台能力组: `承接小组建议平台能力组（负责故障中心），请确认。` The recommendation remains pending until accepted.
+- If ownership is genuinely ambiguous, state the relevant candidate groups and the ambiguity, then ask only for the missing clarification. Do not select `其他`/a fallback group automatically or omit the field to rely on a server default. If priority is missing, ask the user to choose; do not invent P2.
 - User-specified values earlier in this request count as confirmed; preserve them and show them in the preview without asking the same question again. Values merely visible in a screenshot or copied from an existing item are not confirmation.
 - One explicit approval can confirm both values and submission when the complete preview clearly states the exact priority and group and explicitly asks to confirm both. For example: `本次拟提交：优先级 P2，承接小组 平台能力组；请确认这两项及以上完整内容是否可以提交。` This is a confirmation pattern, not a default choice.
 - A reply such as `确认` or `可以提交` does not resolve a blank value, multiple alternatives, or an unmentioned group. If either is unresolved, ask only for the missing choice and retain the completed draft.
