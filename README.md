@@ -4,10 +4,15 @@
 
 | Skill | 用途 |
 | --- | --- |
+| [knowledge-contribute](skills/knowledge-contribute/SKILL.md) | 按平台模板整理知识、保存草稿及明确提交审核；支持远程 MCP |
 | [guance-best-practice-writing](skills/guance-best-practice-writing/SKILL.md) | 观测云最佳实践写作 |
 | [meegle-feedback-preview](skills/meegle-feedback-preview/SKILL.md) | 飞书项目反馈预览与提交 |
 | [guance-service-record-submit](skills/guance-service-record-submit/SKILL.md) | 内置客户问题与结论总结规则，读取客户配置并以当前飞书用户提交服务记录 |
 | [summarize-customer-issue](skills/summarize-customer-issue/SKILL.md) | 独立使用的一句话客户问题摘要工具；不是服务记录技能的依赖 |
+
+## 知识贡献接入
+
+[knowledge-contribute](skills/knowledge-contribute/README.md) 配合平台远程 MCP，将问题处理过程按模板整理为知识草稿，再由本人确认提交审核。接入方式为远程地址和个人令牌，无需下载本地 MCP 客户端。
 
 ## 安装服务记录 skill
 
